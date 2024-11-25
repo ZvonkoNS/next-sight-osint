@@ -112,7 +112,7 @@ def save_results_to_excel(email, validation_result, whois_data, social_accounts,
     # Prepare data
     social_links = "\n".join([f"{platform}: {url}" for platform, url in social_accounts.items()])
     if isinstance(breach_results, list):
-        breach_info = "\n".join([f"{breach['Name']}: {breach['Description']}" for breach in breach_results])
+        breach_info = "\n".join([f"{breach.get('Name', 'Unknown Name')}: {breach.get('Description', 'No Description Available')}" for breach in breach_results])
     else:
         breach_info = breach_results
 
@@ -159,15 +159,14 @@ def main():
     if breached:
         print("Breaches found:")
         for breach in breach_results:
-            print(f"- {breach['Name']}: {breach['Description']}")
+            name = breach.get('Name', 'Unknown Name')
+            description = breach.get('Description', 'No Description Available')
+            print(f"- {name}: {description}")
     else:
-        print(breach_results)
+        print("No breaches found! 🔒")
 
     # Save results
     save_results_to_excel(email, validation_message, whois_info, social_accounts, breach_results)
 
 if __name__ == "__main__":
     main()
-
-# Python script content (already written previously) here
-# For brevity, this content is omitted in this cell
